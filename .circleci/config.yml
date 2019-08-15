@@ -1,1 +1,69 @@
 
+version: 2
+
+app_config: &app_config
+  docker:
+      # Specify the version you desire here
+      - image: circleci/php:7.3-stretch-node-browsers
+
+jobs:
+  build:
+    <<: *app_config
+
+    steps:
+      - checkout
+
+#       # composer cache
+#       - restore_cache:
+#           keys:
+#           # "composer.lock" can be used if it is committed to the repo
+#           - v1-dependencies-{{ checksum "composer.json" }}
+#           # fallback to using the latest cache if no exact match is found
+#           - v1-dependencies-
+
+#       - run: 
+#           name: Run composer Install
+#           command: composer install -n --prefer-dist --ignore-platform-reqs
+
+#       - save_cache:
+#           key: composer-v1-{{ checksum "composer.lock" }}
+#           paths:
+#             - vendor
+        - run: 
+            name: Show setup
+            command: echo "Setup imenoga"
+
+
+      # node cache
+
+#       - restore_cache:
+#           keys:
+#             - node-v4-{{ checksum "package.json" }}
+#             - node-v4-
+#       - run: yarn install
+#       - save_cache:
+#           key: node-v4-{{ checksum "package.json" }}
+#           paths:
+#             - node_modules
+#             - ~/.yarn
+
+  run_application:
+    <<: *app_config
+
+    steps: 
+      - checkout     
+
+#       - run:
+#          name: Run Laravel Server
+#          command: php artisan serve
+#          background: true
+
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+#       - run_application:
+#           requires:
+#             - build
